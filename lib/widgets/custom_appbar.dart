@@ -12,7 +12,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Color(0xff09090B),
       title: Text('LancerCalc'),
       titleTextStyle: TextStyle(
-        color: kPrimaryColor,
+        color: Theme.of(context).colorScheme.primary,
         fontSize: 24,
         fontWeight: FontWeight.bold,
       ),

@@ -14,9 +14,13 @@ class CurrencyCalculator extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.dark,
       darkTheme: ThemeData(
-        scaffoldBackgroundColor: Colors.black,
-      ),
-      home: CurrencyCalculatorView(),
+          scaffoldBackgroundColor: Colors.black,
+          colorScheme: ColorScheme.dark(
+            surface: Color(0xff2E3637),
+            primary: Color(0xff00F5FF),
+            
+          )),
+      home: const CurrencyCalculatorView(),
     );
   }
 }
