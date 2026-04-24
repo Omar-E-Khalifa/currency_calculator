@@ -1,15 +1,13 @@
+import 'package:currency_calculator/models/button_model.dart';
 import 'package:flutter/material.dart';
 
 class CalculatorButton extends StatelessWidget {
   const CalculatorButton({
     super.key,
-    this.backgroundColor = Colors.transparent,
-    required this.child,
+    required this.button,
   });
 
-  final Color backgroundColor;
-
-  final Widget child;
+  final ButtonModel button;
 
   @override
   Widget build(BuildContext context) {
@@ -17,14 +15,14 @@ class CalculatorButton extends StatelessWidget {
       onPressed: () {},
       style: ElevatedButton.styleFrom(
         fixedSize: const Size(60, 60), //TODO: make responsive
-        backgroundColor: backgroundColor,
+        backgroundColor: button.buttonColor,
 
         side: BorderSide(
           color: Theme.of(context).colorScheme.surface,
         ),
         shape: const CircleBorder(),
       ),
-      child: child,
+      child: button.child,
     );
   }
 }

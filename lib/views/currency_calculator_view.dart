@@ -14,22 +14,7 @@ class CurrencyCalculatorView extends StatelessWidget {
         physics: NeverScrollableScrollPhysics(),
         mainAxisSpacing: 25,
         crossAxisSpacing: 25,
-        children: [
-          CalculatorButton(
-            backgroundColor: Theme.of(context).colorScheme.surface,
-            child: Text(
-              'c',
-              style: TextStyle(fontSize: 28),
-            ),
-          ),
-          CalculatorButton(
-            backgroundColor: Theme.of(context).colorScheme.surface,
-            child: Icon(
-              Icons.backspace,
-              color: Colors.white,
-            ),
-          ),
-        ],
+        children: [],
       ),
     );
   }
