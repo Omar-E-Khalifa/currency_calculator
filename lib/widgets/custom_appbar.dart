@@ -1,4 +1,3 @@
-import 'package:currency_calculator/constants.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
