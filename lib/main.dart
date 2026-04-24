@@ -10,8 +10,12 @@ class CurrencyCalculator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
+      themeMode: ThemeMode.dark,
+      darkTheme: ThemeData(
+        scaffoldBackgroundColor: Colors.black,
+      ),
       home: CurrencyCalculatorView(),
     );
   }
