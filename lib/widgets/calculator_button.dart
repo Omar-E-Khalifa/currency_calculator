@@ -1,6 +1,8 @@
 import 'package:currency_calculator/models/button_model.dart';
 import 'package:flutter/material.dart';
 
+///This widget carries the design of the button in the calculator screen
+
 class CalculatorButton extends StatelessWidget {
   const CalculatorButton({
     super.key,
@@ -18,7 +20,7 @@ class CalculatorButton extends StatelessWidget {
         backgroundColor: button.buttonColor,
 
         side: BorderSide(
-          color: Theme.of(context).colorScheme.surface,
+          color: Theme.of(context).colorScheme.surface, // The design have the same border color for all buttons
         ),
         shape: const CircleBorder(),
       ),

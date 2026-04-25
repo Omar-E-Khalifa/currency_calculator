@@ -3,6 +3,9 @@ import 'package:currency_calculator/widgets/calculator_button.dart';
 import 'package:currency_calculator/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 
+
+/// The main screen for the currency calculator view, it connects the widgets together to form the full view
+
 class CurrencyCalculatorView extends StatelessWidget {
   const CurrencyCalculatorView({super.key});
 
@@ -11,7 +14,7 @@ class CurrencyCalculatorView extends StatelessWidget {
     return Scaffold(
       appBar: const CustomAppBar(),
       body: GridView.builder(
-        physics: const NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(), // The calculator buttons should never scroll
         itemCount: buttonsList.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 4,

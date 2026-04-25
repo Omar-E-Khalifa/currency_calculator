@@ -3,8 +3,12 @@ import 'package:currency_calculator/models/button_model.dart';
 import 'package:currency_calculator/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 
+///This file has the List of the buttons used in the calculator,
+///the basic design for a number is a white color and transparent background
+///and for the operations the primary color with a surface color background
+
 const List<ButtonModel> buttonsList = [
-  ButtonModel(
+  ButtonModel( //clear button, different colors for design purposes
     child: CustomText(
       text: 'c',
     ),

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
+///This Class is for the buttons on the calculator whether it's a number or an operation
+
 class ButtonModel {
-  final Widget child;
-  final Color buttonColor;
+  final Widget child;  // Can't be a string as it sometimes carries an Icon widget
+  final Color buttonColor; // Can be transparent for style purposes
 
   const ButtonModel({
     required this.child,
