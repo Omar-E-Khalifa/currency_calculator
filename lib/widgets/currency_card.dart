@@ -1,14 +1,23 @@
+import 'package:currency_calculator/constants.dart';
 import 'package:currency_calculator/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
+
+/// The conversion card widget that contains the values with the currency after calculating
 
 class CurrencyCard extends StatelessWidget {
   const CurrencyCard({
     super.key,
+    required this.currencyName,
+    required this.value,
   });
+
+  final String currencyName;
+  final double value;
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
       height: 100,
       width: 150,
       decoration: BoxDecoration(
@@ -18,22 +27,19 @@ class CurrencyCard extends StatelessWidget {
           color: Theme.of(context).colorScheme.surface,
         ),
       ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CustomText(
-              text: 'EGP',
-              textColor: Color(0xff71717A),
-            ),
-            SizedBox(height: 10),
-            CustomText(
-              text: '5,700',
-            ),
-          ],
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CustomText(
+            text: currencyName,
+            textColor: kSecondaryColor,
+          ),
+          SizedBox(height: 10),
+          CustomText(
+            text: value.toStringAsFixed(2),
+          ),
+        ],
       ),
     );
   }
