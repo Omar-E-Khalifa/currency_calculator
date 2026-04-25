@@ -1,3 +1,4 @@
+import 'package:currency_calculator/constants.dart';
 import 'package:currency_calculator/data/buttons_list.dart';
 import 'package:currency_calculator/widgets/calculator_button.dart';
 import 'package:currency_calculator/widgets/currency_card.dart';
@@ -14,13 +15,13 @@ class CurrencyCalculatorView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(),
-      body: Column(
-        children: [
-          SizedBox(
-            height: 120, //TODO: make responsive
-            width: double.infinity,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 120, //TODO: make responsive
+              width: double.infinity,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -28,7 +29,7 @@ class CurrencyCalculatorView extends StatelessWidget {
                   CustomText(
                     text: '4,500 + 1,200',
                     fontSize: 24,
-                    textColor: Color(0xff71717A),
+                    textColor: kSecondaryColor,
                   ),
                   CustomText(
                     text: '5,700',
@@ -39,25 +40,38 @@ class CurrencyCalculatorView extends StatelessWidget {
                 ],
               ),
             ),
-          ),
-          CurrencyCard(),
-          GridView.builder(
-            physics:
-                const NeverScrollableScrollPhysics(), // The calculator buttons should never scroll
-            shrinkWrap: true,
-            itemCount: buttonsList.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 4,
-              crossAxisSpacing: 25,
-              mainAxisSpacing: 25,
+            Row(
+              children: [
+                Spacer(flex: 1),
+                CurrencyCard(
+                  currencyName: 'EGP',
+                  value: 5700,
+                ),
+                Spacer(flex: 1),
+                CurrencyCard(
+                  currencyName: 'USD',
+                  value: 108.37,
+                ),
+                Spacer(flex: 1),
+              ],
             ),
-            itemBuilder: (context, index) {
-              return CalculatorButton(button: buttonsList[index]);
-            },
-          ),
-        ],
+            GridView.builder(
+              physics:
+                  const NeverScrollableScrollPhysics(), // The calculator buttons should never scroll
+              shrinkWrap: true,
+              itemCount: buttonsList.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4,
+                crossAxisSpacing: 25,
+                mainAxisSpacing: 25,
+              ),
+              itemBuilder: (context, index) {
+                return CalculatorButton(button: buttonsList[index]);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
 }
-
