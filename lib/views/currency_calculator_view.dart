@@ -1,5 +1,6 @@
 import 'package:currency_calculator/data/buttons_list.dart';
 import 'package:currency_calculator/widgets/calculator_button.dart';
+import 'package:currency_calculator/widgets/currency_card.dart';
 import 'package:currency_calculator/widgets/custom_appbar.dart';
 import 'package:currency_calculator/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class CurrencyCalculatorView extends StatelessWidget {
                   CustomText(
                     text: '4,500 + 1,200',
                     fontSize: 24,
-                    textColor: Theme.of(context).colorScheme.surface,
+                    textColor: Color(0xff71717A),
                   ),
                   CustomText(
                     text: '5,700',
@@ -39,6 +40,7 @@ class CurrencyCalculatorView extends StatelessWidget {
               ),
             ),
           ),
+          CurrencyCard(),
           GridView.builder(
             physics:
                 const NeverScrollableScrollPhysics(), // The calculator buttons should never scroll
@@ -58,3 +60,4 @@ class CurrencyCalculatorView extends StatelessWidget {
     );
   }
 }
+
