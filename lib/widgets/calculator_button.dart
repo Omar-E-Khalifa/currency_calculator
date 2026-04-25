@@ -16,11 +16,11 @@ class CalculatorButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: () {},
       style: ElevatedButton.styleFrom(
-        fixedSize: const Size(60, 60), //TODO: make responsive
         backgroundColor: button.buttonColor,
-
         side: BorderSide(
-          color: Theme.of(context).colorScheme.surface, // The design have the same border color for all buttons
+          color: Theme.of(context)
+              .colorScheme
+              .surface, // The design have the same border color for all buttons
         ),
         shape: const CircleBorder(),
       ),

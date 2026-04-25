@@ -55,19 +55,22 @@ class CurrencyCalculatorView extends StatelessWidget {
                 Spacer(flex: 1),
               ],
             ),
-            GridView.builder(
-              physics:
-                  const NeverScrollableScrollPhysics(), // The calculator buttons should never scroll
-              shrinkWrap: true,
-              itemCount: buttonsList.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
-                crossAxisSpacing: 25,
-                mainAxisSpacing: 25,
+            SizedBox(height: 15),
+            Expanded(
+              child: GridView.builder(
+                physics:
+                    const NeverScrollableScrollPhysics(), // The calculator buttons should never scroll
+                shrinkWrap: true,
+                itemCount: buttonsList.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4,
+                  crossAxisSpacing: 25,
+                  mainAxisSpacing: 15,
+                ),
+                itemBuilder: (context, index) {
+                  return CalculatorButton(button: buttonsList[index]);
+                },
               ),
-              itemBuilder: (context, index) {
-                return CalculatorButton(button: buttonsList[index]);
-              },
             ),
           ],
         ),

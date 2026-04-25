@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 ///and for the operations the primary color with a surface color background
 
 const List<ButtonModel> buttonsList = [
-  ButtonModel( //clear button, different colors for design purposes
+  ButtonModel(
+    //clear button, different colors for design purposes
     child: CustomText(
       text: 'c',
     ),
@@ -111,6 +112,7 @@ const List<ButtonModel> buttonsList = [
   ButtonModel(
     child: CustomText(
       text: '00',
+      fontSize: 15,
     ),
     buttonColor: Colors.transparent,
   ),
@@ -134,4 +136,3 @@ const List<ButtonModel> buttonsList = [
     buttonColor: kPrimaryColor,
   ),
 ];
-
