@@ -1,5 +1,7 @@
+import 'package:currency_calculator/cubits/display_area_cubit/display_area_cubit.dart';
 import 'package:currency_calculator/models/button_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 ///This widget carries the design of the button in the calculator screen
 
@@ -14,7 +16,10 @@ class CalculatorButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: () {
+        var buttonPressed = context.read<DisplayAreaCubit>();
+        buttonPressed.buttonPressed(button.value);
+      },
       style: ElevatedButton.styleFrom(
         backgroundColor: button.buttonColor,
         side: BorderSide(
