@@ -1,10 +1,12 @@
 import 'package:currency_calculator/constants.dart';
+import 'package:currency_calculator/cubits/display_area_cubit/display_area_cubit.dart';
 import 'package:currency_calculator/data/buttons_list.dart';
 import 'package:currency_calculator/widgets/calculator_button.dart';
 import 'package:currency_calculator/widgets/currency_card.dart';
 import 'package:currency_calculator/widgets/custom_appbar.dart';
 import 'package:currency_calculator/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// The main screen for the currency calculator view, it connects the widgets together to form the full view
 
@@ -13,29 +15,32 @@ class CurrencyCalculatorView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const CustomAppBar(),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        child: Column(
-          children: [
-            DisplayArea(),
-            ConversionCards(),
-            SizedBox(height: 15),
-            CalculatorGrid(),
+    return BlocProvider(
+      create: (context) => DisplayAreaCubit(),
+      child: Scaffold(
+        appBar: const CustomAppBar(),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Column(
+            children: [
+              DisplayArea(),
+              ConversionCards(),
+              SizedBox(height: 15),
+              CalculatorGrid(),
+            ],
+          ),
+        ),
+        bottomNavigationBar: NavigationBar(
+          backgroundColor: kBarsColor,
+          height: 65,
+          destinations: [
+            NavigationDestination(
+                icon: Icon(Icons.calculate), label: 'CALCULATOR'),
+            NavigationDestination(icon: Icon(Icons.receipt_long), label: 'TAX'),
+            NavigationDestination(
+                icon: Icon(Icons.currency_exchange), label: 'CURRENCIES'),
           ],
         ),
-      ),
-      bottomNavigationBar: NavigationBar(
-        backgroundColor: kBarsColor,
-        height: 65,
-        destinations: [
-          NavigationDestination(
-              icon: Icon(Icons.calculate), label: 'CALCULATOR'),
-          NavigationDestination(icon: Icon(Icons.receipt_long), label: 'TAX'),
-          NavigationDestination(
-              icon: Icon(Icons.currency_exchange), label: 'CURRENCIES'),
-        ],
       ),
     );
   }
@@ -61,7 +66,9 @@ class CalculatorGrid extends StatelessWidget {
           mainAxisSpacing: 15,
         ),
         itemBuilder: (context, index) {
-          return CalculatorButton(button: buttonsList[index]);
+          return CalculatorButton(
+            button: buttonsList[index],
+          );
         },
       ),
     );
@@ -102,26 +109,33 @@ class DisplayArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 120, //TODO: make responsive
-      width: double.infinity,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          CustomText(
-            text: '4,500 + 1,200',
-            fontSize: 24,
-            textColor: kSecondaryColor,
+    return BlocBuilder<DisplayAreaCubit, DisplayAreaState>(
+      builder: (context, state) {
+        return SizedBox(
+          height: 120, //TODO: make responsive
+          width: double.infinity,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              if (state.result.isNotEmpty)
+                CustomText(
+                  // top grey line
+                  text: state.typedValue,
+                  fontSize: 24,
+                  textColor: kSecondaryColor,
+                ),
+              CustomText(
+                // main cyan line
+                text: state.result.isNotEmpty ? state.result : state.typedValue,
+                fontSize: 28,
+                textColor: Theme.of(context).colorScheme.primary,
+                fontWeight: FontWeight.bold,
+              ),
+            ],
           ),
-          CustomText(
-            text: '5,700',
-            fontSize: 28,
-            textColor: Theme.of(context).colorScheme.primary,
-            fontWeight: FontWeight.bold,
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
