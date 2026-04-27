@@ -10,129 +10,103 @@ import 'package:flutter/material.dart';
 const List<ButtonModel> buttonsList = [
   ButtonModel(
     //clear button, different colors for design purposes
-    child: CustomText(
-      text: 'c',
-    ),
+    child: CustomText(text: 'c'),
     buttonColor: kSurfaceColor,
+    value: 'c',
   ),
   ButtonModel(
-    child: Icon(
-      Icons.backspace,
-    ),
+    child: Icon(Icons.backspace),
     buttonColor: kSurfaceColor,
+    value: 'back',
   ),
   ButtonModel(
-    child: CustomText(
-      text: '%',
-    ),
+    child: CustomText(text: '%'),
     buttonColor: kSurfaceColor,
+    value: '%',
   ),
   ButtonModel(
-    child: CustomText(
-      text: '÷',
-      textColor: kPrimaryColor,
-    ),
+    child: CustomText(text: '÷', textColor: kPrimaryColor),
     buttonColor: kSurfaceColor,
+    value: '÷',
   ),
   ButtonModel(
-    child: CustomText(
-      text: '7',
-    ),
+    child: CustomText(text: '7'),
     buttonColor: Colors.transparent,
+    value: '7',
   ),
   ButtonModel(
-    child: CustomText(
-      text: '8',
-    ),
+    child: CustomText(text: '8'),
     buttonColor: Colors.transparent,
+    value: '8',
   ),
   ButtonModel(
-    child: CustomText(
-      text: '9',
-    ),
+    child: CustomText(text: '9'),
     buttonColor: Colors.transparent,
+    value: '9',
   ),
   ButtonModel(
-    child: CustomText(
-      text: '×',
-      textColor: kPrimaryColor,
-    ),
+    child: CustomText(text: '×', textColor: kPrimaryColor),
     buttonColor: kSurfaceColor,
+    value: '×',
   ),
   ButtonModel(
-    child: CustomText(
-      text: '4',
-    ),
+    child: CustomText(text: '4'),
     buttonColor: Colors.transparent,
+    value: '4',
   ),
   ButtonModel(
-    child: CustomText(
-      text: '5',
-    ),
+    child: CustomText(text: '5'),
     buttonColor: Colors.transparent,
+    value: '5',
   ),
   ButtonModel(
-    child: CustomText(
-      text: '6',
-    ),
+    child: CustomText(text: '6'),
     buttonColor: Colors.transparent,
+    value: '6',
   ),
   ButtonModel(
-    child: CustomText(
-      text: '-',
-      textColor: kPrimaryColor,
-    ),
+    child: CustomText(text: '-', textColor: kPrimaryColor),
     buttonColor: kSurfaceColor,
+    value: '-',
   ),
   ButtonModel(
-    child: CustomText(
-      text: '1',
-    ),
+    child: CustomText(text: '1'),
     buttonColor: Colors.transparent,
+    value: '1',
   ),
   ButtonModel(
-    child: CustomText(
-      text: '2',
-    ),
+    child: CustomText(text: '2'),
     buttonColor: Colors.transparent,
+    value: '2',
   ),
   ButtonModel(
-    child: CustomText(
-      text: '3',
-    ),
+    child: CustomText(text: '3'),
     buttonColor: Colors.transparent,
+    value: '3',
   ),
   ButtonModel(
-    child: CustomText(
-      text: '+',
-      textColor: kPrimaryColor,
-    ),
+    child: CustomText(text: '+', textColor: kPrimaryColor),
     buttonColor: kSurfaceColor,
+    value: '+',
   ),
   ButtonModel(
-    child: CustomText(
-      text: '00',
-      fontSize: 15,
-    ),
+    child: CustomText(text: '00', fontSize: 15),
     buttonColor: Colors.transparent,
+    value: '00',
   ),
   ButtonModel(
-    child: CustomText(
-      text: '0',
-    ),
+    child: CustomText(text: '0'),
     buttonColor: Colors.transparent,
+    value: '0',
   ),
   ButtonModel(
-    child: CustomText(
-      text: '.',
-    ),
+    child: CustomText(text: '.'),
     buttonColor: Colors.transparent,
+    value: '.',
   ),
   ButtonModel(
-    child: CustomText(
-      text: '=',
-      textColor: Colors.black,
-    ),
+    child: CustomText(text: '=', textColor: Colors.black),
     buttonColor: kPrimaryColor,
+    value: '=',
   ),
 ];
