@@ -15,14 +15,14 @@ const List<ButtonModel> buttonsList = [
     value: 'c',
   ),
   ButtonModel(
-    child: Icon(Icons.backspace),
-    buttonColor: kSurfaceColor,
-    value: 'back',
-  ),
-  ButtonModel(
     child: CustomText(text: '%'),
     buttonColor: kSurfaceColor,
     value: '%',
+  ),
+  ButtonModel(
+    child: Icon(Icons.backspace),
+    buttonColor: kSurfaceColor,
+    value: 'back',
   ),
   ButtonModel(
     child: CustomText(text: '÷', textColor: kPrimaryColor),
