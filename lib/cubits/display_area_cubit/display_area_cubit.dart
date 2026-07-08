@@ -10,11 +10,9 @@ class DisplayAreaCubit extends Cubit<DisplayAreaState> {
     switch (button) {
       case '=':
         num? calcResult = calculate(state.typedValue);
+
         emit(DisplayAreaState(
-            result: calcResult == null
-                ? ''
-                : calcResult
-                    .toString(), //if a formatExcpetion happend, the equal button should be ignored or show an empty result
+            result: calcResult == null ? '' : calcResult.toString(),
             typedValue: state.typedValue));
         break;
       case 'c':
@@ -51,7 +49,8 @@ class DisplayAreaCubit extends Cubit<DisplayAreaState> {
       if (eval.isInfinite || eval.isNaN) {
         return null;
       }
-      return eval;
+      num formatted  = eval % 1 == 0 ? eval.toInt() : eval; //return int or double
+      return formatted ;
     } on FormatException {
       return null;
     } on Exception catch (e) {
