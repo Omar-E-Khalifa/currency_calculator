@@ -38,9 +38,20 @@ class DisplayAreaCubit extends Cubit<DisplayAreaState> {
         isCalculated = false;
         break;
 
-      default:
+
+      case '%' || '÷' || '×' || '-' || '+':
+        isCalculated
+            ? emit(
+                DisplayAreaState(result: '', typedValue: state.result + button))
+            : emit(DisplayAreaState(typedValue: state.typedValue + button));
         isCalculated = false;
-        emit(DisplayAreaState(typedValue: state.typedValue + button));
+        break;
+
+      default:
+        isCalculated
+            ? emit(DisplayAreaState(result: '', typedValue: button))
+            : emit(DisplayAreaState(typedValue: state.typedValue + button));
+        isCalculated = false;
         break;
     }
   }
