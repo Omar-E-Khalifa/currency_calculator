@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:math_expressions/math_expressions.dart';
 
@@ -38,12 +36,27 @@ class DisplayAreaCubit extends Cubit<DisplayAreaState> {
         isCalculated = false;
         break;
 
-
       case '%' || '÷' || '×' || '-' || '+':
         isCalculated
             ? emit(
                 DisplayAreaState(result: '', typedValue: state.result + button))
             : emit(DisplayAreaState(typedValue: state.typedValue + button));
+        isCalculated = false;
+        break;
+
+      case '.':
+        int lastOpIndex = state.typedValue.lastIndexOf(RegExp(r'[+\-×÷]'));
+        String currentSegment = state.typedValue.substring(lastOpIndex + 1);
+        bool hasDecimal = currentSegment.contains('.');
+
+        if (isCalculated) {
+          emit(DisplayAreaState(result: '', typedValue: button));
+        } else if (hasDecimal) {
+          emit(DisplayAreaState(typedValue: state.typedValue));
+        } else {
+          emit(DisplayAreaState(typedValue: state.typedValue + button));
+        }
+
         isCalculated = false;
         break;
 
@@ -58,8 +71,9 @@ class DisplayAreaCubit extends Cubit<DisplayAreaState> {
 
   num? calculate(String expression) {
     try {
-      String updatedValue =
-          expression.replaceAll('×', '*').replaceAll('÷', '/');
+      String updatedValue = expression.replaceAllMapped(
+          RegExp(r'(^|[+\-×÷])\.'), (match) => '${match.group(1)}0.');
+      updatedValue = updatedValue.replaceAll('×', '*').replaceAll('÷', '/');
       ExpressionParser p = GrammarParser();
       Expression exp = p.parse(updatedValue);
 
