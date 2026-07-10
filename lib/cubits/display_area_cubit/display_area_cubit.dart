@@ -37,11 +37,30 @@ class DisplayAreaCubit extends Cubit<DisplayAreaState> {
         break;
 
       case '%' || '÷' || '×' || '-' || '+':
-        isCalculated
-            ? emit(
-                DisplayAreaState(result: '', typedValue: state.result + button))
-            : emit(DisplayAreaState(typedValue: state.typedValue + button));
+        if (isCalculated) {
+          emit(DisplayAreaState(result: '', typedValue: state.result + button));
+        } else {
+          int lastOpIndex = state.typedValue.lastIndexOf(RegExp(r'[+\-×÷]'));
+          if (state.typedValue.isNotEmpty &&
+              lastOpIndex == state.typedValue.length - 1) {
+            emit(
+              DisplayAreaState(
+                  typedValue: state.typedValue
+                          .substring(0, state.typedValue.length - 1) +
+                      button),
+            );
+          } else {
+            emit(DisplayAreaState(typedValue: state.typedValue + button));
+          }
+        }
+
         isCalculated = false;
+
+        // isCalculated
+        //     ? emit(
+        //         DisplayAreaState(result: '', typedValue: state.result + button))
+        //     : emit(DisplayAreaState(typedValue: state.typedValue + button));
+        // isCalculated = false;
         break;
 
       case '.':
