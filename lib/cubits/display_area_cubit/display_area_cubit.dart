@@ -40,7 +40,8 @@ class DisplayAreaCubit extends Cubit<DisplayAreaState> {
         if (isCalculated) {
           emit(DisplayAreaState(result: '', typedValue: state.result + button));
         } else {
-          int lastOpIndex = state.typedValue.lastIndexOf(RegExp(r'[+\-×÷]'));
+          int lastOpIndex = state.typedValue.lastIndexOf(RegExp(r'[+×÷]'));
+          int lastNegIndex = state.typedValue.lastIndexOf(RegExp(r'\-'));
           if (state.typedValue.isNotEmpty &&
               lastOpIndex == state.typedValue.length - 1) {
             emit(
@@ -49,6 +50,25 @@ class DisplayAreaCubit extends Cubit<DisplayAreaState> {
                           .substring(0, state.typedValue.length - 1) +
                       button),
             );
+          } else if (state.typedValue.isNotEmpty &&
+              lastNegIndex == state.typedValue.length - 1) {
+            if (state.typedValue.length == 1) {
+              emit(DisplayAreaState(typedValue: ""));
+            } else if (lastOpIndex == state.typedValue.length - 2) {
+              emit(
+                DisplayAreaState(
+                    typedValue: state.typedValue
+                            .substring(0, state.typedValue.length - 2) +
+                        button),
+              );
+            } else {
+              emit(DisplayAreaState(
+                  typedValue: state.typedValue
+                          .substring(0, state.typedValue.length - 1) +
+                      button));
+            }
+          } else if (state.typedValue.isEmpty) {
+            emit(DisplayAreaState(typedValue: ''));
           } else {
             emit(DisplayAreaState(typedValue: state.typedValue + button));
           }
