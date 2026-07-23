@@ -77,21 +77,22 @@ class DisplayAreaCubit extends Cubit<DisplayAreaState> {
         isCalculated = false;
         break;
 
-      case '-':
+      case '-': //TODO: the double negative
         if (isCalculated) {
           emit(DisplayAreaState(result: '', typedValue: state.result + button));
         } else {
+          int lastOpIndex = state.typedValue.lastIndexOf(RegExp(r'[+×÷]'));
           int lastNegIndex = state.typedValue.lastIndexOf(RegExp(r'\-'));
-          if (state.typedValue.isNotEmpty &&
-              lastNegIndex == state.typedValue.length - 1) {
-            emit(
-              DisplayAreaState(
-                  typedValue: state.typedValue
-                          .substring(0, state.typedValue.length - 1) +
-                      button),
-            );
-          } else if (state.typedValue.isEmpty) {
+          if (state.typedValue.isEmpty) {
             emit(DisplayAreaState(typedValue: button));
+          } else if (state.typedValue.isNotEmpty &&
+              lastNegIndex == state.typedValue.length - 1) {
+            if (state.typedValue.length > 1 &&
+                lastOpIndex == state.typedValue.length - 2) {
+              emit(
+                DisplayAreaState(typedValue: state.typedValue),
+              );
+            }
           } else {
             emit(
               DisplayAreaState(typedValue: state.typedValue + button),
