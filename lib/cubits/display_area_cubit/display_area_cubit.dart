@@ -130,6 +130,8 @@ class DisplayAreaCubit extends Cubit<DisplayAreaState> {
     try {
       String updatedValue = expression.replaceAllMapped(
           RegExp(r'(^|[+\-×÷])\.'), (match) => '${match.group(1)}0.');
+      updatedValue = updatedValue.replaceAllMapped(
+          RegExp(r'\.($|[+\-×÷])'), (match) => '.0${match.group(1)}');
       updatedValue = updatedValue.replaceAll('×', '*').replaceAll('÷', '/');
       ExpressionParser p = GrammarParser();
       Expression exp = p.parse(updatedValue);
