@@ -15,7 +15,7 @@ class DisplayAreaCubit extends Cubit<DisplayAreaState> {
         emit(DisplayAreaState(
             result: calcResult == null ? '' : calcResult.toString(),
             typedValue: state.typedValue));
-        state.result != '' ? isCalculated = true : isCalculated = false;
+        calcResult != null ? isCalculated = true : isCalculated = false;
 
         break;
 
@@ -36,7 +36,7 @@ class DisplayAreaCubit extends Cubit<DisplayAreaState> {
         isCalculated = false;
         break;
 
-      case '%' || '÷' || '×' || '-' || '+':
+      case '%' || '÷' || '×' || '+':
         if (isCalculated) {
           emit(DisplayAreaState(result: '', typedValue: state.result + button));
         } else {
@@ -55,12 +55,30 @@ class DisplayAreaCubit extends Cubit<DisplayAreaState> {
         }
 
         isCalculated = false;
+        break;
 
-        // isCalculated
-        //     ? emit(
-        //         DisplayAreaState(result: '', typedValue: state.result + button))
-        //     : emit(DisplayAreaState(typedValue: state.typedValue + button));
-        // isCalculated = false;
+      case '-':
+        if (isCalculated) {
+          emit(DisplayAreaState(result: '', typedValue: state.result + button));
+        } else {
+          int lastNegIndex = state.typedValue.lastIndexOf(RegExp(r'\-'));
+          if (state.typedValue.isNotEmpty &&
+              lastNegIndex == state.typedValue.length - 1) {
+            emit(
+              DisplayAreaState(
+                  typedValue: state.typedValue
+                          .substring(0, state.typedValue.length - 1) +
+                      button),
+            );
+          } else if (state.typedValue.isEmpty) {
+            emit(DisplayAreaState(typedValue: button));
+          } else {
+            emit(
+              DisplayAreaState(typedValue: state.typedValue + button),
+            );
+          }
+        }
+        isCalculated = false;
         break;
 
       case '.':
