@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:currency_calculator/models/exchange_rate_API_exception.dart';
 import 'package:currency_calculator/models/pair_exchange_model.dart';
 import 'package:dio/dio.dart';
 
@@ -17,6 +18,10 @@ class ExchangeRateService {
       Response response = await dio.get(
           'https://v6.exchangerate-api.com/v6/$apiKey/pair/$fromCurrency/$toCurrency');
 
+      if (response.data['result'] == 'error') {
+        throw ExchangeRateApiException(errorType: response.data['error-type']);
+      }
+
       PairExchangeModel currentRate =
           PairExchangeModel.fromJson(response.data as Map<String, dynamic>);
       log(currentRate.fromCurrency);
@@ -24,10 +29,8 @@ class ExchangeRateService {
       log(currentRate.rate.toString());
 
       return currentRate;
-    } on DioException catch (e) {
-      throw Exception(e.toString());
-    } on Exception catch (e) {
-      throw Exception(e.toString());
+    } on DioException {
+      rethrow;
     }
   }
 }
