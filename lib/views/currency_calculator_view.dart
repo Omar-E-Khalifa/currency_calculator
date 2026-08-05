@@ -1,10 +1,13 @@
 import 'package:currency_calculator/constants.dart';
 import 'package:currency_calculator/cubits/display_area_cubit/display_area_cubit.dart';
+import 'package:currency_calculator/cubits/exchange_rate_cubit/exchange_rate_cubit.dart';
 import 'package:currency_calculator/data/buttons_list.dart';
+import 'package:currency_calculator/services/exchange_rate_service.dart';
 import 'package:currency_calculator/widgets/calculator_button.dart';
 import 'package:currency_calculator/widgets/currency_card.dart';
 import 'package:currency_calculator/widgets/custom_appbar.dart';
 import 'package:currency_calculator/widgets/custom_text.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,13 +24,18 @@ class CurrencyCalculatorView extends StatelessWidget {
         appBar: const CustomAppBar(),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Column(
-            children: [
-              DisplayArea(),
-              ConversionCards(),
-              SizedBox(height: 15),
-              CalculatorGrid(),
-            ],
+          child: BlocProvider(
+            create: (context) => ExchangeRateCubit(
+                displayAreaCubit: context.read<DisplayAreaCubit>(),
+                exchangeRateService: ExchangeRateService(Dio())),
+            child: Column(
+              children: [
+                DisplayArea(),
+                ConversionCards(),
+                SizedBox(height: 15),
+                CalculatorGrid(),
+              ],
+            ),
           ),
         ),
         bottomNavigationBar: NavigationBar(
@@ -83,17 +91,63 @@ class ConversionCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<ExchangeRateCubit, ExchangeRateState>(
+      builder: (context, state) {
+        if (state is ExchangeRateInitial) {
+          return ConversionCardsRow(
+              mainCurrencyCode: 'USD',
+              secCurrencyCode: 'EGP',
+              mainValue: 0,
+              secValue: 0);
+        } else if (state is ExchangeRateSuccessState) {
+          return ConversionCardsRow(
+              mainCurrencyCode: state.mainCurrencyCode,
+              secCurrencyCode: state.secCurrencyCode,
+              mainValue: state.mainValue,
+              secValue: state.secValue);
+        } else if (state is ExchangeRateFailureState) { //TODO: make the failuare state
+          return ConversionCardsRow(
+              mainCurrencyCode: '-',
+              secCurrencyCode: '-',
+              mainValue: 0,
+              secValue: 0);
+        } else {
+          // unreachable: all real subtypes handled above, Dart requires this for exhaustiveness
+          return ConversionCardsRow(
+              mainCurrencyCode: '---',
+              secCurrencyCode: '-',
+              mainValue: 0,
+              secValue: 0);
+        }
+      },
+    );
+  }
+}
+
+class ConversionCardsRow extends StatelessWidget {
+  const ConversionCardsRow({
+    super.key,
+    required this.mainCurrencyCode,
+    required this.secCurrencyCode,
+    required this.mainValue,
+    required this.secValue,
+  });
+  final String mainCurrencyCode, secCurrencyCode;
+  final double mainValue, secValue;
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       children: [
         Spacer(flex: 1),
         CurrencyCard(
-          currencyName: 'EGP',
-          value: 5700,
+          currencyName: mainCurrencyCode,
+          value: mainValue,
         ),
         Spacer(flex: 1),
         CurrencyCard(
-          currencyName: 'USD',
-          value: 108.37,
+          currencyName: secCurrencyCode,
+          value: secValue,
         ),
         Spacer(flex: 1),
       ],
