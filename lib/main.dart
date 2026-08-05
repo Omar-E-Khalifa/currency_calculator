@@ -18,7 +18,6 @@ class CurrencyCalculator extends StatelessWidget {
           colorScheme: ColorScheme.dark(
             surface: Color(0xff2E3637),
             primary: Color(0xff00F5FF),
-            
           )),
       home: const CurrencyCalculatorView(),
     );
