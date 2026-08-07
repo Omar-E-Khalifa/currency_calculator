@@ -12,12 +12,13 @@ class DisplayAreaCubit extends Cubit<DisplayAreaState> {
     switch (button) {
       case '=':
         num? calcResult = calculate(state.typedValue);
-        emit(DisplayAreaState(
-            result: calcResult == null ? '' : calcResult.toString(),
-            typedValue: state.typedValue));
-        calcResult != null ? isCalculated = true : isCalculated = false;
+        if (calcResult != null) {
+          emit(DisplayAreaState(
+              result: calcResult.toString(), typedValue: state.typedValue));
+          isCalculated = true;
 
-        break;
+          break;
+        }
 
       case 'c':
         emit(DisplayAreaState(typedValue: ''));

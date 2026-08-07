@@ -47,6 +47,16 @@ class CurrencyCalculatorView extends StatelessWidget {
                                 'There is currently a problem with the application, please try again later');
                     }
                   });
+            } else if (state is ExchangeRateBadFormatState) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('The Expreission is wrong'),
+                  backgroundColor: Colors.red,
+                  duration: const Duration(seconds: 2),
+                  behavior: SnackBarBehavior.floating,
+                  action: SnackBarAction(label: 'Okay', onPressed: () {}),
+                ),
+              );
             }
           },
           child: Scaffold(
