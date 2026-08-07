@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:currency_calculator/models/exchange_rate_API_exception.dart';
+import 'package:currency_calculator/models/exchange_rate_api_exception.dart';
 import 'package:currency_calculator/models/pair_exchange_model.dart';
 import 'package:dio/dio.dart';
 

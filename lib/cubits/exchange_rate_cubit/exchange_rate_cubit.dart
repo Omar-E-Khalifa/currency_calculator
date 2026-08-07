@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:currency_calculator/cubits/display_area_cubit/display_area_cubit.dart';
-import 'package:currency_calculator/models/exchange_rate_API_exception.dart';
+import 'package:currency_calculator/models/exchange_rate_api_exception.dart';
 import 'package:currency_calculator/models/pair_exchange_model.dart';
 import 'package:currency_calculator/services/exchange_rate_service.dart';
 
