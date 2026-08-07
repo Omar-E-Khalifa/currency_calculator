@@ -120,7 +120,7 @@ class CalculatorGrid extends StatelessWidget {
         itemCount: buttonsList.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 4,
-          crossAxisSpacing: 25,
+          crossAxisSpacing: 27,
           mainAxisSpacing: 15,
         ),
         itemBuilder: (context, index) {
@@ -145,7 +145,7 @@ class ConversionCards extends StatelessWidget {
       builder: (context, state) {
         if (state is ExchangeRateLoadingState) {
           return SizedBox(
-            height: 100,
+            height: 125,
             // width: 150,
             child: ModalProgressHUD(
               opacity: 0,
