@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:currency_calculator/models/exchange_rate_api_exception.dart';
+import 'package:currency_calculator/models/exchange_rate_API_exception.dart';
 import 'package:currency_calculator/models/pair_exchange_model.dart';
 import 'package:dio/dio.dart';
 
@@ -29,8 +29,13 @@ class ExchangeRateService {
       log(currentRate.rate.toString());
 
       return currentRate;
-    } on DioException {
-      rethrow;
+    } on DioException catch (e) {
+      if (e.response?.data != null) {
+        throw ExchangeRateApiException(
+            errorType: e.response!.data['error-type']);
+      } else {
+        rethrow;
+      }
     }
   }
 }
