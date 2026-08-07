@@ -20,34 +20,60 @@ class CurrencyCalculatorView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => DisplayAreaCubit(),
-      child: Scaffold(
-        appBar: const CustomAppBar(),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: BlocProvider(
-            create: (context) => ExchangeRateCubit(
-                displayAreaCubit: context.read<DisplayAreaCubit>(),
-                exchangeRateService: ExchangeRateService(Dio())),
-            child: Column(
-              children: [
-                DisplayArea(),
-                ConversionCards(),
-                SizedBox(height: 15),
-                CalculatorGrid(),
+      child: BlocProvider(
+        create: (context) => ExchangeRateCubit(
+            displayAreaCubit: context.read<DisplayAreaCubit>(),
+            exchangeRateService: ExchangeRateService(Dio())),
+        child: BlocListener<ExchangeRateCubit, ExchangeRateState>(
+          listener: (context, state) {
+            if (state is ExchangeRateFailureState) {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    switch (state.errorType) {
+                      case 'quota-reached':
+                        return ErrorDialog(
+                            content:
+                                'You have consumed your daily limit for today, please try again tommorrow');
+                      case 'network-error':
+                        return ErrorDialog(
+                            content:
+                                'No intertnet connection, please connect to wifi and try again.');
+
+                      default:
+                        return ErrorDialog(
+                            content:
+                                'There is currently a problem with the application, please try again later');
+                    }
+                  });
+            }
+          },
+          child: Scaffold(
+            appBar: const CustomAppBar(),
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Column(
+                children: [
+                  DisplayArea(),
+                  ConversionCards(),
+                  SizedBox(height: 15),
+                  CalculatorGrid(),
+                ],
+              ),
+            ),
+            bottomNavigationBar: NavigationBar(
+              backgroundColor: kBarsColor,
+              height: 65,
+              destinations: [
+                NavigationDestination(
+                    icon: Icon(Icons.calculate), label: 'CALCULATOR'),
+                NavigationDestination(
+                    icon: Icon(Icons.receipt_long), label: 'TAX'),
+                NavigationDestination(
+                    icon: Icon(Icons.currency_exchange), label: 'CURRENCIES'),
               ],
             ),
           ),
-        ),
-        bottomNavigationBar: NavigationBar(
-          backgroundColor: kBarsColor,
-          height: 65,
-          destinations: [
-            NavigationDestination(
-                icon: Icon(Icons.calculate), label: 'CALCULATOR'),
-            NavigationDestination(icon: Icon(Icons.receipt_long), label: 'TAX'),
-            NavigationDestination(
-                icon: Icon(Icons.currency_exchange), label: 'CURRENCIES'),
-          ],
         ),
       ),
     );
@@ -105,7 +131,7 @@ class ConversionCards extends StatelessWidget {
               secCurrencyCode: state.secCurrencyCode,
               mainValue: state.mainValue,
               secValue: state.secValue);
-        } else if (state is ExchangeRateFailureState) { //TODO: make the failuare state
+        } else if (state is ExchangeRateFailureState) {
           return ConversionCardsRow(
               mainCurrencyCode: '-',
               secCurrencyCode: '-',
@@ -190,6 +216,27 @@ class DisplayArea extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class ErrorDialog extends StatelessWidget {
+  const ErrorDialog({
+    super.key,
+    required this.content,
+  });
+  final String content;
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Error'),
+      content: Text(content),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('Okay'),
+        )
+      ],
     );
   }
 }
