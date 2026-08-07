@@ -2,6 +2,7 @@ import 'package:currency_calculator/constants.dart';
 import 'package:currency_calculator/cubits/display_area_cubit/display_area_cubit.dart';
 import 'package:currency_calculator/cubits/exchange_rate_cubit/exchange_rate_cubit.dart';
 import 'package:currency_calculator/data/buttons_list.dart';
+import 'package:currency_calculator/models/button_model.dart';
 import 'package:currency_calculator/services/exchange_rate_service.dart';
 import 'package:currency_calculator/widgets/calculator_button.dart';
 import 'package:currency_calculator/widgets/currency_card.dart';
@@ -60,6 +61,19 @@ class CurrencyCalculatorView extends StatelessWidget {
             }
           },
           child: Scaffold(
+            drawer: Drawer(
+              child: Column(
+                children: [
+                  DrawerHeader(
+                    child: Text('data'),
+                  ),
+                  ListTile(
+                    title: Text('Setting'),
+                    leading: Icon(Icons.settings),
+                  )
+                ],
+              ),
+            ),
             appBar: const CustomAppBar(),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -67,7 +81,6 @@ class CurrencyCalculatorView extends StatelessWidget {
                 children: [
                   DisplayArea(),
                   ConversionCards(),
-                  SizedBox(height: 15),
                   CalculatorGrid(),
                 ],
               ),
@@ -191,19 +204,35 @@ class ConversionCardsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
       children: [
-        Spacer(flex: 1),
-        CurrencyCard(
-          currencyName: mainCurrencyCode,
-          value: mainValue,
+        Row(
+          children: [
+            Spacer(flex: 1),
+            CurrencyCard(
+              currencyName: mainCurrencyCode,
+              value: mainValue,
+            ),
+            Spacer(flex: 1),
+            CurrencyCard(
+              currencyName: secCurrencyCode,
+              value: secValue,
+            ),
+            Spacer(flex: 1),
+          ],
         ),
-        Spacer(flex: 1),
-        CurrencyCard(
-          currencyName: secCurrencyCode,
-          value: secValue,
-        ),
-        Spacer(flex: 1),
+        SizedBox(
+          height: 25,
+          child: CalculatorButton(
+              button: ButtonModel(
+                  child: Icon(
+                    Icons.swap_horiz,
+                    color: Colors.white,
+                    size: 15,
+                  ),
+                  buttonColor: kSurfaceColor,
+                  value: 'switch')),
+        )
       ],
     );
   }
