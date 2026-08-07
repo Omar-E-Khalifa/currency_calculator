@@ -24,3 +24,5 @@ class ExchangeRateFailureState extends ExchangeRateState {
 }
 
 class ExchangeRateLoadingState extends ExchangeRateState {}
+class ExchangeRateBadFormatState extends ExchangeRateState {}
+
