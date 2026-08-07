@@ -19,7 +19,6 @@ class ExchangeRateCubit extends Cubit<ExchangeRateState> {
       PairExchangeModel pairExchangeModel = await exchangeRateService
           .getCurrentRates('USD', 'EGP'); //TODO: make the currencies selectable
       if (displayAreaCubit.state.result == '') {
-
         emit(ExchangeRateBadFormatState());
       } else {
         double mainValue = double.parse(displayAreaCubit.state.result);
@@ -36,5 +35,9 @@ class ExchangeRateCubit extends Cubit<ExchangeRateState> {
     } on Exception {
       emit(ExchangeRateFailureState(errorType: 'network-error'));
     }
+  }
+
+  void clearPressed() {
+    emit(ExchangeRateInitial());
   }
 }

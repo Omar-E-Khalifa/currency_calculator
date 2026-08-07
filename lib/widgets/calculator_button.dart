@@ -23,6 +23,8 @@ class CalculatorButton extends StatelessWidget {
         buttonPressed.buttonPressed(button.value);
         if (button.value == '=') {
           exchangeRateCubit.equalPressed();
+        } else if (button.value == 'c') {
+          exchangeRateCubit.clearPressed();
         }
       },
       style: ElevatedButton.styleFrom(
