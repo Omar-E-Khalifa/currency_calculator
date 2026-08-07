@@ -14,6 +14,7 @@ class ExchangeRateCubit extends Cubit<ExchangeRateState> {
   final ExchangeRateService exchangeRateService;
 
   void equalPressed() async {
+    emit(ExchangeRateLoadingState());
     try {
       PairExchangeModel pairExchangeModel = await exchangeRateService
           .getCurrentRates('USD', 'EGP'); //TODO: make the currencies selectable

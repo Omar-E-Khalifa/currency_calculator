@@ -22,3 +22,5 @@ class ExchangeRateFailureState extends ExchangeRateState {
 
   ExchangeRateFailureState({required this.errorType});
 }
+
+class ExchangeRateLoadingState extends ExchangeRateState {}

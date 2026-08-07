@@ -10,6 +10,7 @@ import 'package:currency_calculator/widgets/custom_text.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 /// The main screen for the currency calculator view, it connects the widgets together to form the full view
 
@@ -119,7 +120,24 @@ class ConversionCards extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ExchangeRateCubit, ExchangeRateState>(
       builder: (context, state) {
-        if (state is ExchangeRateInitial) {
+        if (state is ExchangeRateLoadingState) {
+          return SizedBox(
+            height: 100,
+            // width: 150,
+            child: ModalProgressHUD(
+              opacity: 0,
+              progressIndicator: CircularProgressIndicator(
+                color: kPrimaryColor,
+              ),
+              inAsyncCall: true,
+              child: ConversionCardsRow(
+                  mainCurrencyCode: 'USD',
+                  secCurrencyCode: 'EGP',
+                  mainValue: 0,
+                  secValue: 0),
+            ),
+          );
+        } else if (state is ExchangeRateInitial) {
           return ConversionCardsRow(
               mainCurrencyCode: 'USD',
               secCurrencyCode: 'EGP',
