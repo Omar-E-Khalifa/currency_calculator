@@ -4,6 +4,7 @@ import 'package:currency_calculator/cubits/exchange_rate_cubit/exchange_rate_cub
 import 'package:currency_calculator/data/buttons_list.dart';
 import 'package:currency_calculator/models/button_model.dart';
 import 'package:currency_calculator/services/exchange_rate_service.dart';
+import 'package:currency_calculator/services/shared_preferences_service.dart';
 import 'package:currency_calculator/widgets/calculator_button.dart';
 import 'package:currency_calculator/widgets/currency_card.dart';
 import 'package:currency_calculator/widgets/custom_appbar.dart';
@@ -12,6 +13,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// The main screen for the currency calculator view, it connects the widgets together to form the full view
 
@@ -24,8 +26,11 @@ class CurrencyCalculatorView extends StatelessWidget {
       create: (context) => DisplayAreaCubit(),
       child: BlocProvider(
         create: (context) => ExchangeRateCubit(
-            displayAreaCubit: context.read<DisplayAreaCubit>(),
-            exchangeRateService: ExchangeRateService(Dio())),
+          displayAreaCubit: context.read<DisplayAreaCubit>(),
+          exchangeRateService: ExchangeRateService(Dio()),
+          sharedPreferencesService:
+              SharedPreferencesService(asyncPrefs: SharedPreferencesAsync()),
+        ),
         child: BlocListener<ExchangeRateCubit, ExchangeRateState>(
           listener: (context, state) {
             if (state is ExchangeRateFailureState) {
@@ -36,11 +41,11 @@ class CurrencyCalculatorView extends StatelessWidget {
                       case 'quota-reached':
                         return ErrorDialog(
                             content:
-                                'You have consumed your daily limit for today, please try again tommorrow');
+                                'You have consumed your daily limit for today, please try again tomorrow');
                       case 'network-error':
                         return ErrorDialog(
                             content:
-                                'No intertnet connection, please connect to wifi and try again.');
+                                'No internet connection, please connect to wifi and try again.');
 
                       default:
                         return ErrorDialog(
@@ -51,7 +56,7 @@ class CurrencyCalculatorView extends StatelessWidget {
             } else if (state is ExchangeRateBadFormatState) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('The Expreission is wrong'),
+                  content: Text('The Expression is wrong'),
                   backgroundColor: Colors.red,
                   duration: const Duration(seconds: 2),
                   behavior: SnackBarBehavior.floating,
