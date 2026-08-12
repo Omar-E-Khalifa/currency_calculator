@@ -6,3 +6,5 @@ const Color kSecondaryColor = Color(0xff71717A);
 const Color kBarsColor = Color(0xff09090B);
 const String kMainCurrency = 'main_currency';
 const String kSecCurrency = 'sec_currency';
+const String kCachedCurrencies = 'cached_currencies';
+
