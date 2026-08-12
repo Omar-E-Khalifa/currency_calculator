@@ -5,6 +5,7 @@ import 'package:currency_calculator/data/buttons_list.dart';
 import 'package:currency_calculator/models/button_model.dart';
 import 'package:currency_calculator/services/exchange_rate_service.dart';
 import 'package:currency_calculator/services/shared_preferences_service.dart';
+import 'package:currency_calculator/views/settings_view.dart';
 import 'package:currency_calculator/widgets/calculator_button.dart';
 import 'package:currency_calculator/widgets/currency_card.dart';
 import 'package:currency_calculator/widgets/custom_appbar.dart';
@@ -67,6 +68,7 @@ class CurrencyCalculatorView extends StatelessWidget {
           },
           child: Scaffold(
             drawer: Drawer(
+              backgroundColor: kBarsColor,
               child: Column(
                 children: [
                   DrawerHeader(
@@ -75,11 +77,22 @@ class CurrencyCalculatorView extends StatelessWidget {
                   ListTile(
                     title: Text('Setting'),
                     leading: Icon(Icons.settings),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SettingsView(),
+                        ),
+                      );
+                    },
                   )
                 ],
               ),
             ),
-            appBar: const CustomAppBar(),
+            appBar: const CustomAppBar(
+              title: 'LancerCalc',
+            ),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Column(
