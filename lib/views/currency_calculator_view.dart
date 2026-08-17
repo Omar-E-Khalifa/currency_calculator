@@ -9,6 +9,7 @@ import 'package:currency_calculator/views/settings_view.dart';
 import 'package:currency_calculator/widgets/calculator_button.dart';
 import 'package:currency_calculator/widgets/currency_card.dart';
 import 'package:currency_calculator/widgets/custom_appbar.dart';
+import 'package:currency_calculator/widgets/custom_error_dialog.dart';
 import 'package:currency_calculator/widgets/custom_text.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -295,23 +296,3 @@ class DisplayArea extends StatelessWidget {
   }
 }
 
-class ErrorDialog extends StatelessWidget {
-  const ErrorDialog({
-    super.key,
-    required this.content,
-  });
-  final String content;
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Text('Error'),
-      content: Text(content),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Okay'),
-        )
-      ],
-    );
-  }
-}
