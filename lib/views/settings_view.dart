@@ -49,86 +49,104 @@ class _SettingsViewState extends State<SettingsView> {
       ),
       body: ListView(
         children: [
-          Card(
-            color: kSecondaryColor,
-            child: BlocConsumer<CurrencyListCubit, CurrencyListState>(
-              listener: (context, state) {
-                if (state is CurrencyListFailure) {
-                  showDialog(
-                    context: context,
-                    builder: (context) => ErrorDialog(
-                        content:
-                            'There is currently a problem with the application, please try again later'),
-                  );
-                }
-              },
-              builder: (context, state) {
-                if (state is CurrencyListLoading) {
-                  return CircularProgressIndicator(); //TODO: Make using modal progress Hud
-                } else if (state is CurrencyListSuccess &&
-                    mainCurrency != null &&
-                    secCurrency != null) {
-                  final entries = state.currencies
-                      .map((c) =>
-                          DropdownMenuEntry(value: c, label: c.currencyCode))
-                      .toList();
+          SizedBox(
+            height: 120,
+            child: Card(
+              color: kSecondaryColor,
+              child: BlocConsumer<CurrencyListCubit, CurrencyListState>(
+                listener: (context, state) {
+                  if (state is CurrencyListFailure) {
+                    showDialog(
+                      context: context,
+                      builder: (context) => ErrorDialog(
+                          content:
+                              'There is currently a problem with the application, please try again later'),
+                    );
+                  }
+                },
+                builder: (context, state) {
+                  if (state is CurrencyListLoading) {
+                    return CustomProgressIndicator();
+                  } else if (state is CurrencyListSuccess &&
+                      mainCurrency != null &&
+                      secCurrency != null) {
+                    final entries = state.currencies
+                        .map((c) =>
+                            DropdownMenuEntry(value: c, label: c.currencyCode))
+                        .toList();
 
-                  return Row(
-                    children: [
-                      CurrencySelectionColumn(
-                        title: 'Main Currency',
-                        list: entries,
-                        onCurrencySelected: (currency) {
-                          if (currency != null) {
-                            sharedPreferencesService
-                                .setMainCurrency(currency.currencyCode);
-                          }
-                        },
-                        initialSelection: state.currencies.firstWhere(
-                          (c) => c.currencyCode == mainCurrency,
-                          orElse: () => state.currencies.first,
-                        ),
-                      ),
-                      Spacer(flex: 1),
-                      CurrencySelectionColumn(
-                        title: 'Second Currency',
-                        list: entries,
-                        onCurrencySelected: (currency) {
-                          if (currency != null) {
-                            sharedPreferencesService
-                                .setSecCurrency(currency.currencyCode);
-                          }
-                        },
-                        initialSelection: state.currencies.firstWhere(
-                            (c) => c.currencyCode == secCurrency,
-                            orElse: () => state.currencies.first),
-                      ),
-                    ],
-                  );
-                } else if (state is CurrencyListFailure) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    child: Column(
+                    return Row(
                       children: [
-                        IconButton(
-                          onPressed: () {
-                            context.read<CurrencyListCubit>().loadCurrencies();
+                        CurrencySelectionColumn(
+                          title: 'Main Currency',
+                          list: entries,
+                          onCurrencySelected: (currency) {
+                            if (currency != null) {
+                              sharedPreferencesService
+                                  .setMainCurrency(currency.currencyCode);
+                            }
                           },
-                          icon: Icon(Icons.restart_alt),
+                          initialSelection: state.currencies.firstWhere(
+                            (c) => c.currencyCode == mainCurrency,
+                            orElse: () => state.currencies.first,
+                          ),
                         ),
-                        Text('Retry')
+                        Spacer(flex: 1),
+                        CurrencySelectionColumn(
+                          title: 'Second Currency',
+                          list: entries,
+                          onCurrencySelected: (currency) {
+                            if (currency != null) {
+                              sharedPreferencesService
+                                  .setSecCurrency(currency.currencyCode);
+                            }
+                          },
+                          initialSelection: state.currencies.firstWhere(
+                              (c) => c.currencyCode == secCurrency,
+                              orElse: () => state.currencies.first),
+                        ),
                       ],
-                    ),
-                  );
-                } else {
-                  return CircularProgressIndicator(); //filler
-                }
-              },
+                    );
+                  } else if (state is CurrencyListFailure) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      child: Column(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              context
+                                  .read<CurrencyListCubit>()
+                                  .loadCurrencies();
+                            },
+                            icon: Icon(Icons.restart_alt),
+                          ),
+                          Text('Retry')
+                        ],
+                      ),
+                    );
+                  } else {
+                    return CustomProgressIndicator();
+                  }
+                },
+              ),
             ),
           )
         ],
       ),
     );
+  }
+}
+
+class CustomProgressIndicator extends StatelessWidget {
+  const CustomProgressIndicator({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+        child: SizedBox(
+            width: 50, height: 50, child: CircularProgressIndicator()));
   }
 }
 
