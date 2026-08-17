@@ -3,6 +3,7 @@ import 'package:currency_calculator/cubits/currency_list_cubit/currency_list_cub
 import 'package:currency_calculator/models/currency_model.dart';
 import 'package:currency_calculator/services/shared_preferences_service.dart';
 import 'package:currency_calculator/widgets/custom_appbar.dart';
+import 'package:currency_calculator/widgets/custom_error_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -50,13 +51,20 @@ class _SettingsViewState extends State<SettingsView> {
         children: [
           Card(
             color: kSecondaryColor,
-            child: BlocBuilder<CurrencyListCubit, CurrencyListState>(
+            child: BlocConsumer<CurrencyListCubit, CurrencyListState>(
+              listener: (context, state) {
+                if (state is CurrencyListFailure) {
+                  showDialog(
+                    context: context,
+                    builder: (context) => ErrorDialog(
+                        content:
+                            'There is currently a problem with the application, please try again later'),
+                  );
+                }
+              },
               builder: (context, state) {
                 if (state is CurrencyListLoading) {
-                  return CircularProgressIndicator();
-                } else if (state is CurrencyListFailure) {
-                  //TODO: implement error handling
-                  return Container();
+                  return CircularProgressIndicator(); //TODO: Make using modal progress Hud
                 } else if (state is CurrencyListSuccess &&
                     mainCurrency != null &&
                     secCurrency != null) {
@@ -96,6 +104,21 @@ class _SettingsViewState extends State<SettingsView> {
                             orElse: () => state.currencies.first),
                       ),
                     ],
+                  );
+                } else if (state is CurrencyListFailure) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: Column(
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            context.read<CurrencyListCubit>().loadCurrencies();
+                          },
+                          icon: Icon(Icons.restart_alt),
+                        ),
+                        Text('Retry')
+                      ],
+                    ),
                   );
                 } else {
                   return CircularProgressIndicator(); //filler
