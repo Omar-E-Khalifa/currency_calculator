@@ -61,4 +61,13 @@ class SharedPreferencesService {
       return null;
     }
   }
+
+  Future<void> swapCurrencies() async {
+    String mainCurrency = await getMainCurrency();
+    String secCurrency = await getSecCurrency();
+    (mainCurrency, secCurrency) = (secCurrency, mainCurrency);
+    await setMainCurrency(mainCurrency);
+    await setSecCurrency(secCurrency);
+    
+  }
 }
