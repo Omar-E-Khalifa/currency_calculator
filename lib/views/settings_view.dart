@@ -80,10 +80,19 @@ class _SettingsViewState extends State<SettingsView> {
                         CurrencySelectionColumn(
                           title: 'Main Currency',
                           list: entries,
-                          onCurrencySelected: (currency) {
+                          onCurrencySelected: (currency) async {
                             if (currency != null) {
-                              sharedPreferencesService
-                                  .setMainCurrency(currency.currencyCode);
+                              if (currency.currencyCode == secCurrency) {
+                                await sharedPreferencesService.swapCurrencies();
+                                getMainCurrency();
+                                getSecCurrency();
+                              } else {
+                                await sharedPreferencesService
+                                    .setMainCurrency(currency.currencyCode);
+                                setState(() {
+                                  mainCurrency = currency.currencyCode;
+                                });
+                              }
                             }
                           },
                           initialSelection: state.currencies.firstWhere(
@@ -95,10 +104,19 @@ class _SettingsViewState extends State<SettingsView> {
                         CurrencySelectionColumn(
                           title: 'Second Currency',
                           list: entries,
-                          onCurrencySelected: (currency) {
+                          onCurrencySelected: (currency) async {
                             if (currency != null) {
-                              sharedPreferencesService
-                                  .setSecCurrency(currency.currencyCode);
+                              if (currency.currencyCode == mainCurrency) {
+                                await sharedPreferencesService.swapCurrencies();
+                                getMainCurrency();
+                                getSecCurrency();
+                              } else {
+                                await sharedPreferencesService
+                                    .setSecCurrency(currency.currencyCode);
+                                setState(() {
+                                  secCurrency = currency.currencyCode;
+                                });
+                              }
                             }
                           },
                           initialSelection: state.currencies.firstWhere(
@@ -158,6 +176,7 @@ class CurrencySelectionColumn extends StatelessWidget {
     required this.onCurrencySelected,
     required this.initialSelection,
   });
+
   final String title;
   final List<DropdownMenuEntry<CurrencyModel>> list;
   final ValueChanged<CurrencyModel?> onCurrencySelected;
@@ -178,6 +197,7 @@ class CurrencySelectionColumn extends StatelessWidget {
           ),
           SizedBox(height: 8),
           DropdownMenu(
+            key: ValueKey(initialSelection.currencyCode),
             dropdownMenuEntries: list,
             enableFilter: true,
             enableSearch: true,
