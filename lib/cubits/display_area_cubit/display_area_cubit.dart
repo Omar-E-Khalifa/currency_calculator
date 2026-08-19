@@ -119,9 +119,7 @@ class DisplayAreaCubit extends Cubit<DisplayAreaState> {
         isCalculated = false;
         break;
 
-      case 'switch':
-      
-        break;
+     
 
       default:
         isCalculated
