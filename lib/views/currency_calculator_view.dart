@@ -250,7 +250,7 @@ class ConversionCardsRow extends StatelessWidget {
                     size: 15,
                   ),
                   buttonColor: kSurfaceColor,
-                  value: 'switch')),
+                  value: 'swap')),
         )
       ],
     );
@@ -295,4 +295,3 @@ class DisplayArea extends StatelessWidget {
     );
   }
 }
-
