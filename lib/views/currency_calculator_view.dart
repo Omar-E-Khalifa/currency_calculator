@@ -173,16 +173,16 @@ class ConversionCards extends StatelessWidget {
               ),
               inAsyncCall: true,
               child: ConversionCardsRow(
-                  mainCurrencyCode: 'USD',
-                  secCurrencyCode: 'EGP',
+                  mainCurrencyCode: state.mainCurrencyCode,
+                  secCurrencyCode: state.secCurrencyCode,
                   mainValue: 0,
                   secValue: 0),
             ),
           );
         } else if (state is ExchangeRateInitial) {
           return ConversionCardsRow(
-              mainCurrencyCode: 'USD',
-              secCurrencyCode: 'EGP',
+              mainCurrencyCode: state.mainCurrencyCode,
+              secCurrencyCode: state.secCurrencyCode,
               mainValue: 0,
               secValue: 0);
         } else if (state is ExchangeRateSuccessState) {
@@ -193,8 +193,8 @@ class ConversionCards extends StatelessWidget {
               secValue: state.secValue);
         } else if (state is ExchangeRateFailureState) {
           return ConversionCardsRow(
-              mainCurrencyCode: '-',
-              secCurrencyCode: '-',
+              mainCurrencyCode: state.mainCurrencyCode,
+              secCurrencyCode: state.secCurrencyCode,
               mainValue: 0,
               secValue: 0);
         } else {
