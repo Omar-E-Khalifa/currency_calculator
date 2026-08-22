@@ -1,5 +1,6 @@
 import 'package:currency_calculator/constants.dart';
 import 'package:currency_calculator/cubits/currency_list_cubit/currency_list_cubit.dart';
+import 'package:currency_calculator/cubits/exchange_rate_cubit/exchange_rate_cubit.dart';
 import 'package:currency_calculator/models/currency_model.dart';
 import 'package:currency_calculator/services/shared_preferences_service.dart';
 import 'package:currency_calculator/widgets/custom_appbar.dart';
@@ -19,6 +20,7 @@ class _SettingsViewState extends State<SettingsView> {
   @override
   void initState() {
     context.read<CurrencyListCubit>().loadCurrencies();
+    context.read<ExchangeRateCubit>().getCurrencies();
     getMainCurrency();
     getSecCurrency();
 
@@ -86,13 +88,26 @@ class _SettingsViewState extends State<SettingsView> {
                                 await sharedPreferencesService.swapCurrencies();
                                 getMainCurrency();
                                 getSecCurrency();
+                                if (!context.mounted) return;
+                                await context
+                                    .read<ExchangeRateCubit>()
+                                    .getCurrencies();
                               } else {
                                 await sharedPreferencesService
                                     .setMainCurrency(currency.currencyCode);
                                 setState(() {
                                   mainCurrency = currency.currencyCode;
                                 });
+                                if (!context.mounted) return;
+                                await context
+                                    .read<ExchangeRateCubit>()
+                                    .getCurrencies();
                               }
+                            }
+                            if (!context.mounted) return;
+                            if (context.read<ExchangeRateCubit>().state
+                                is ExchangeRateSuccessState) {
+                              context.read<ExchangeRateCubit>().equalPressed();
                             }
                           },
                           initialSelection: state.currencies.firstWhere(
@@ -110,13 +125,26 @@ class _SettingsViewState extends State<SettingsView> {
                                 await sharedPreferencesService.swapCurrencies();
                                 getMainCurrency();
                                 getSecCurrency();
+                                if (!context.mounted) return;
+                                await context
+                                    .read<ExchangeRateCubit>()
+                                    .getCurrencies();
                               } else {
                                 await sharedPreferencesService
                                     .setSecCurrency(currency.currencyCode);
                                 setState(() {
                                   secCurrency = currency.currencyCode;
                                 });
+                                if (!context.mounted) return;
+                                await context
+                                    .read<ExchangeRateCubit>()
+                                    .getCurrencies();
                               }
+                            }
+                            if (!context.mounted) return;
+                            if (context.read<ExchangeRateCubit>().state
+                                is ExchangeRateSuccessState) {
+                              context.read<ExchangeRateCubit>().equalPressed();
                             }
                           },
                           initialSelection: state.currencies.firstWhere(
