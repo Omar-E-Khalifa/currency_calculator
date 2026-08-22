@@ -12,20 +12,57 @@ class ExchangeRateCubit extends Cubit<ExchangeRateState> {
       {required this.displayAreaCubit,
       required this.exchangeRateService,
       required this.sharedPreferencesService})
-      : super(ExchangeRateInitial());
+      : super(
+          ExchangeRateInitial(mainCurrencyCode: '-', secCurrencyCode: '-'),
+        ) {
+    Future.microtask(() async => await getCurrencies());
+  }
+
   final DisplayAreaCubit displayAreaCubit;
   final ExchangeRateService exchangeRateService;
   final SharedPreferencesService sharedPreferencesService;
 
+  Future<void> getCurrencies() async {
+    final mainCurrencyCode = await sharedPreferencesService.getMainCurrency();
+    final secCurrencyCode = await sharedPreferencesService.getSecCurrency();
+    final currentState = state;
+    if (currentState is ExchangeRateInitial) {
+      emit(ExchangeRateInitial(
+          mainCurrencyCode: mainCurrencyCode,
+          secCurrencyCode: secCurrencyCode));
+    } else if (currentState is ExchangeRateLoadingState) {
+      emit(ExchangeRateLoadingState(
+          mainCurrencyCode: mainCurrencyCode,
+          secCurrencyCode: secCurrencyCode));
+    } else if (currentState is ExchangeRateBadFormatState) {
+      emit(ExchangeRateBadFormatState(
+          mainCurrencyCode: mainCurrencyCode,
+          secCurrencyCode: secCurrencyCode));
+    } else if (currentState is ExchangeRateFailureState) {
+      emit(ExchangeRateFailureState(
+          errorType: currentState.errorType,
+          mainCurrencyCode: mainCurrencyCode,
+          secCurrencyCode: secCurrencyCode));
+    } else if (currentState is ExchangeRateSuccessState) {
+      emit(ExchangeRateSuccessState(
+          mainCurrencyCode: mainCurrencyCode,
+          secCurrencyCode: secCurrencyCode,
+          mainValue: currentState.mainValue,
+          secValue: currentState.secValue));
+    }
+  }
+
   void equalPressed() async {
-    emit(ExchangeRateLoadingState());
+    emit(ExchangeRateLoadingState(
+        mainCurrencyCode: state.mainCurrencyCode,
+        secCurrencyCode: state.secCurrencyCode));
     try {
-      PairExchangeModel pairExchangeModel =
-          await exchangeRateService.getCurrentRates(
-              await sharedPreferencesService.getMainCurrency(),
-              await sharedPreferencesService.getSecCurrency());
+      PairExchangeModel pairExchangeModel = await exchangeRateService
+          .getCurrentRates(state.mainCurrencyCode, state.secCurrencyCode);
       if (displayAreaCubit.state.result == '') {
-        emit(ExchangeRateBadFormatState());
+        emit(ExchangeRateBadFormatState(
+            mainCurrencyCode: state.mainCurrencyCode,
+            secCurrencyCode: state.secCurrencyCode));
       } else {
         double mainValue = double.parse(displayAreaCubit.state.result);
 
@@ -37,43 +74,56 @@ class ExchangeRateCubit extends Cubit<ExchangeRateState> {
             secValue: secValue));
       }
     } on ExchangeRateApiException catch (e) {
-      emit(ExchangeRateFailureState(errorType: e.errorType));
+      emit(ExchangeRateFailureState(
+          errorType: e.errorType,
+          mainCurrencyCode: state.mainCurrencyCode,
+          secCurrencyCode: state.secCurrencyCode));
     } on Exception {
-      emit(ExchangeRateFailureState(errorType: 'network-error'));
+      emit(ExchangeRateFailureState(
+          errorType: 'network-error',
+          mainCurrencyCode: state.mainCurrencyCode,
+          secCurrencyCode: state.secCurrencyCode));
     }
   }
 
   void clearPressed() {
-    emit(ExchangeRateInitial());
+    emit(ExchangeRateInitial(
+        mainCurrencyCode: state.mainCurrencyCode,
+        secCurrencyCode: state.secCurrencyCode));
   }
 
   Future<void> swapPressed() async {
-    emit(ExchangeRateLoadingState());
+    emit(ExchangeRateLoadingState(
+        mainCurrencyCode: state.mainCurrencyCode,
+        secCurrencyCode: state.secCurrencyCode));
     try {
       await sharedPreferencesService.swapCurrencies();
-      String mainCurrency = await sharedPreferencesService.getMainCurrency();
-      String secCurrency = await sharedPreferencesService.getSecCurrency();
-      PairExchangeModel pairExchangeModel =
-          await exchangeRateService.getCurrentRates(mainCurrency, secCurrency);
+      await getCurrencies();
+
+      PairExchangeModel pairExchangeModel = await exchangeRateService
+          .getCurrentRates(state.mainCurrencyCode, state.secCurrencyCode);
 
       if (displayAreaCubit.state.result == '') {
         emit(ExchangeRateSuccessState(
-            mainCurrencyCode: mainCurrency,
+            mainCurrencyCode: state.mainCurrencyCode,
             mainValue: 0,
-            secCurrencyCode: secCurrency,
+            secCurrencyCode: state.secCurrencyCode,
             secValue: 0));
       } else {
         double mainValue = double.parse(displayAreaCubit.state.result);
         double secValue = (mainValue * pairExchangeModel.rate);
 
         emit(ExchangeRateSuccessState(
-            mainCurrencyCode: mainCurrency,
+            mainCurrencyCode: state.mainCurrencyCode,
             mainValue: mainValue,
-            secCurrencyCode: secCurrency,
+            secCurrencyCode: state.secCurrencyCode,
             secValue: secValue));
       }
     } on Exception {
-      emit(ExchangeRateFailureState(errorType: 'network-error'));
+      emit(ExchangeRateFailureState(
+          errorType: 'network-error',
+          mainCurrencyCode: state.mainCurrencyCode,
+          secCurrencyCode: state.secCurrencyCode));
     }
   }
 }
