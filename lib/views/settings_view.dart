@@ -40,6 +40,37 @@ class _SettingsViewState extends State<SettingsView> {
     setState(() {});
   }
 
+  Future<void> _handleCurrencySelected(String? currency,
+      {required bool isMain}) async {
+    if (currency == null) return;
+
+    final String? otherCurrency = isMain ? secCurrency : mainCurrency;
+    if (currency == otherCurrency) {
+      await sharedPreferencesService.swapCurrencies();
+      getMainCurrency();
+      getSecCurrency();
+      if (!mounted) return;
+      await context.read<ExchangeRateCubit>().getCurrencies();
+    } else {
+      if (isMain) {
+        await sharedPreferencesService.setMainCurrency(currency);
+        mainCurrency = currency;
+      } else {
+        await sharedPreferencesService.setSecCurrency(currency);
+        secCurrency = currency;
+      }
+
+      setState(() {});
+      if (!mounted) return;
+      await context.read<ExchangeRateCubit>().getCurrencies();
+    }
+
+    if (!mounted) return;
+    if (context.read<ExchangeRateCubit>().state is ExchangeRateSuccessState) {
+      context.read<ExchangeRateCubit>().equalPressed();
+    }
+  }
+
   String? mainCurrency;
   String? secCurrency;
 
@@ -82,34 +113,9 @@ class _SettingsViewState extends State<SettingsView> {
                         CurrencySelectionColumn(
                           title: 'Main Currency',
                           list: entries,
-                          onCurrencySelected: (currency) async {
-                            if (currency != null) {
-                              if (currency.currencyCode == secCurrency) {
-                                await sharedPreferencesService.swapCurrencies();
-                                getMainCurrency();
-                                getSecCurrency();
-                                if (!context.mounted) return;
-                                await context
-                                    .read<ExchangeRateCubit>()
-                                    .getCurrencies();
-                              } else {
-                                await sharedPreferencesService
-                                    .setMainCurrency(currency.currencyCode);
-                                setState(() {
-                                  mainCurrency = currency.currencyCode;
-                                });
-                                if (!context.mounted) return;
-                                await context
-                                    .read<ExchangeRateCubit>()
-                                    .getCurrencies();
-                              }
-                            }
-                            if (!context.mounted) return;
-                            if (context.read<ExchangeRateCubit>().state
-                                is ExchangeRateSuccessState) {
-                              context.read<ExchangeRateCubit>().equalPressed();
-                            }
-                          },
+                          onCurrencySelected: (currency) =>
+                              _handleCurrencySelected(currency?.currencyCode,
+                                  isMain: true),
                           initialSelection: state.currencies.firstWhere(
                             (c) => c.currencyCode == mainCurrency,
                             orElse: () => state.currencies.first,
@@ -119,34 +125,9 @@ class _SettingsViewState extends State<SettingsView> {
                         CurrencySelectionColumn(
                           title: 'Second Currency',
                           list: entries,
-                          onCurrencySelected: (currency) async {
-                            if (currency != null) {
-                              if (currency.currencyCode == mainCurrency) {
-                                await sharedPreferencesService.swapCurrencies();
-                                getMainCurrency();
-                                getSecCurrency();
-                                if (!context.mounted) return;
-                                await context
-                                    .read<ExchangeRateCubit>()
-                                    .getCurrencies();
-                              } else {
-                                await sharedPreferencesService
-                                    .setSecCurrency(currency.currencyCode);
-                                setState(() {
-                                  secCurrency = currency.currencyCode;
-                                });
-                                if (!context.mounted) return;
-                                await context
-                                    .read<ExchangeRateCubit>()
-                                    .getCurrencies();
-                              }
-                            }
-                            if (!context.mounted) return;
-                            if (context.read<ExchangeRateCubit>().state
-                                is ExchangeRateSuccessState) {
-                              context.read<ExchangeRateCubit>().equalPressed();
-                            }
-                          },
+                          onCurrencySelected: (currency) =>
+                              _handleCurrencySelected(currency?.currencyCode,
+                                  isMain: false),
                           initialSelection: state.currencies.firstWhere(
                               (c) => c.currencyCode == secCurrency,
                               orElse: () => state.currencies.first),
