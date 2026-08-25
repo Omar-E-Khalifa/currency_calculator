@@ -20,9 +20,15 @@ class CalculatorButton extends StatelessWidget {
       onPressed: () {
         var exchangeRateCubit = BlocProvider.of<ExchangeRateCubit>(context);
         var buttonPressed = context.read<DisplayAreaCubit>();
-        buttonPressed.buttonPressed(button.value);
-        if (button.value == '=') {
-          exchangeRateCubit.equalPressed();
+        if (button.value == 'swap') {
+          exchangeRateCubit.swapPressed();
+        } else {
+          buttonPressed.buttonPressed(button.value);
+          if (button.value == '=') {
+            exchangeRateCubit.equalPressed();
+          } else if (button.value == 'c') {
+            exchangeRateCubit.clearPressed();
+          }
         }
       },
       style: ElevatedButton.styleFrom(

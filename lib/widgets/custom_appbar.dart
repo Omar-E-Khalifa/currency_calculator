@@ -5,14 +5,15 @@ import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
-    super.key,
+    super.key, required this.title,
   });
+  final String title;
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: kBarsColor, 
-      title: Text('LancerCalc'),
+      backgroundColor: kBarsColor,
+      title: Text(title),
       titleTextStyle: TextStyle(
         color: Theme.of(context).colorScheme.primary,
         fontSize: 24,
