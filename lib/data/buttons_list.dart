@@ -90,7 +90,7 @@ const List<ButtonModel> buttonsList = [
     value: '+',
   ),
   ButtonModel(
-    child: CustomText(text: '00', fontSize: 15),
+    child: CustomText(text: '00', fontSize: 13),
     buttonColor: Colors.transparent,
     value: '00',
   ),
