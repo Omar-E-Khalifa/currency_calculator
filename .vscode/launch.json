@@ -14,13 +14,21 @@
             "name": "currency_calculator (profile mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
+            "flutterMode": "profile",
+            "toolArgs": [
+                "--dart-define-from-file",
+                "secrets.json"
+            ]
         },
         {
             "name": "currency_calculator (release mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release"
+            "flutterMode": "release",
+            "toolArgs": [
+                "--dart-define-from-file",
+                "secrets.json"
+            ]
         }
     ]
 }
