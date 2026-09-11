@@ -29,6 +29,35 @@
                 "--dart-define-from-file",
                 "secrets.json"
             ]
+        },
+        {
+            "name": "Phone (RMX2163)",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "AYTWAYY9BYKN9XGA",
+            "toolArgs": [
+                "--dart-define-from-file",
+                "secrets.json"
+            ]
+        },
+        {
+            "name": "Chrome",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "chrome",
+            "toolArgs": [
+                "--dart-define-from-file",
+                "secrets.json"
+            ]
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Phone + Chrome",
+            "configurations": [
+                "Phone (RMX2163)",
+                "Chrome"
+            ]
         }
     ]
 }
