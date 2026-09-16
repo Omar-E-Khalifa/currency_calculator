@@ -55,7 +55,11 @@ class CurrencyCalculatorView extends StatelessWidget {
         }
       },
       child: Scaffold(
+        appBar: const CustomAppBar(
+          title: 'LancerCalc',
+        ),
         drawer: Drawer(
+
           backgroundColor: kBarsColor,
           child: Column(
             children: [
@@ -78,9 +82,6 @@ class CurrencyCalculatorView extends StatelessWidget {
             ],
           ),
         ),
-        appBar: const CustomAppBar(
-          title: 'LancerCalc',
-        ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Column(
@@ -97,8 +98,7 @@ class CurrencyCalculatorView extends StatelessWidget {
           destinations: [
             NavigationDestination(
                 icon: Icon(Icons.calculate), label: 'CALCULATOR'),
-            NavigationDestination(
-                icon: Icon(Icons.receipt_long), label: 'TAX'),
+            NavigationDestination(icon: Icon(Icons.receipt_long), label: 'TAX'),
             NavigationDestination(
                 icon: Icon(Icons.currency_exchange), label: 'CURRENCIES'),
           ],
