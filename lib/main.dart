@@ -4,7 +4,7 @@ import 'package:currency_calculator/cubits/exchange_rate_cubit/exchange_rate_cub
 import 'package:currency_calculator/services/exchange_rate_service.dart';
 import 'package:currency_calculator/services/shared_preferences_service.dart';
 import 'package:currency_calculator/services/supported_code_service.dart';
-import 'package:currency_calculator/views/currency_calculator_view.dart';
+import 'package:currency_calculator/views/mobile/currency_calculator_view.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
