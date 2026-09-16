@@ -1,9 +1,9 @@
-import 'package:currency_calculator/constants.dart';
 import 'package:currency_calculator/cubits/exchange_rate_cubit/exchange_rate_cubit.dart';
-import 'package:currency_calculator/views/mobile/settings_view.dart';
 import 'package:currency_calculator/widgets/calculator_grid.dart';
 import 'package:currency_calculator/widgets/conversion_cards.dart';
 import 'package:currency_calculator/widgets/custom_appbar.dart';
+import 'package:currency_calculator/widgets/custom_bottom_navigation_bar.dart';
+import 'package:currency_calculator/widgets/custom_drawer.dart';
 import 'package:currency_calculator/widgets/custom_error_dialog.dart';
 import 'package:currency_calculator/widgets/display_area.dart';
 import 'package:flutter/material.dart';
@@ -54,53 +54,18 @@ class CurrencyCalculatorView extends StatelessWidget {
         appBar: const CustomAppBar(
           title: 'LancerCalc',
         ),
-        drawer: Drawer(
-          backgroundColor: kBarsColor,
-          child: Column(
-            children: [
-              DrawerHeader(
-                child: Text('data'),
-              ),
-              ListTile(
-                title: Text('Setting'),
-                leading: Icon(Icons.settings),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SettingsView(),
-                    ),
-                  );
-                },
-              )
-            ],
-          ),
-        ),
+        drawer: CustomDrawer(),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Column(
             children: [
-              Expanded(child: DisplayArea()),
-              Expanded(child: ConversionCards()),
-              Expanded(
-                flex: 3,
-                child: CalculatorGrid(),
-              ),
+              DisplayArea(),
+              ConversionCards(),
+              CalculatorGrid(),
             ],
           ),
         ),
-        bottomNavigationBar: NavigationBar(
-          backgroundColor: kBarsColor,
-          height: 65,
-          destinations: [
-            NavigationDestination(
-                icon: Icon(Icons.calculate), label: 'CALCULATOR'),
-            NavigationDestination(icon: Icon(Icons.receipt_long), label: 'TAX'),
-            NavigationDestination(
-                icon: Icon(Icons.currency_exchange), label: 'CURRENCIES'),
-          ],
-        ),
+        bottomNavigationBar: CustomBottomNavigationBar(),
       ),
     );
   }
