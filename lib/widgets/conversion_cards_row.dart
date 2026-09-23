@@ -22,14 +22,20 @@ class ConversionCardsRow extends StatelessWidget {
         Row(
           children: [
             Spacer(flex: 1),
-            CurrencyCard(
-              currencyName: mainCurrencyCode,
-              value: mainValue,
+            Expanded(
+              flex: 7,
+              child: CurrencyCard(
+                currencyName: mainCurrencyCode,
+                value: mainValue,
+              ),
             ),
-            Spacer(flex: 1),
-            CurrencyCard(
-              currencyName: secCurrencyCode,
-              value: secValue,
+            Spacer(flex: 2),
+            Expanded(
+              flex: 7,
+              child: CurrencyCard(
+                currencyName: secCurrencyCode,
+                value: secValue,
+              ),
             ),
             Spacer(flex: 1),
           ],
