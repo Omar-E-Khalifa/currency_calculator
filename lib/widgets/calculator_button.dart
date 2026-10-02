@@ -32,6 +32,7 @@ class CalculatorButton extends StatelessWidget {
         }
       },
       style: ElevatedButton.styleFrom(
+        padding: EdgeInsets.zero,
         backgroundColor: button.buttonColor,
         side: BorderSide(
           color: Theme.of(context)
