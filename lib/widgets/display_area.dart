@@ -4,9 +4,9 @@ import 'package:currency_calculator/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-const kDisplayMinHeight = 75.0; //minimum height to carry both texts
-const kDisplayMaxHeight = 150.0; //a safety max cap
-const kDisplayHeightToWidthRatio = 0.3; // the ratio selected visually
+const _kDisplayMinHeight = 75.0; //minimum height to carry both texts
+const _kDisplayMaxHeight = 150.0; //a safety max cap
+const _kDisplayHeightToWidthRatio = 0.3; // the ratio selected visually
 
 /// The area that the operations and the result appear in
 class DisplayArea extends StatelessWidget {
@@ -19,8 +19,8 @@ class DisplayArea extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final double height =
-            (constraints.maxWidth * kDisplayHeightToWidthRatio)
-                .clamp(kDisplayMinHeight, kDisplayMaxHeight);
+            (constraints.maxWidth * _kDisplayHeightToWidthRatio)
+                .clamp(_kDisplayMinHeight, _kDisplayMaxHeight);
         return BlocBuilder<DisplayAreaCubit, DisplayAreaState>(
           builder: (context, state) {
             return SizedBox(

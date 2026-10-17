@@ -4,7 +4,7 @@ import 'package:currency_calculator/widgets/calculator_button.dart';
 import 'package:currency_calculator/widgets/currency_card.dart';
 import 'package:flutter/material.dart';
 
-const kSwapButtonSize = 36.0;
+const _kSwapButtonSize = 36.0;
 
 class ConversionCardsRow extends StatelessWidget {
   const ConversionCardsRow({
@@ -33,8 +33,8 @@ class ConversionCardsRow extends StatelessWidget {
           flex: 2,
           child: Center(
             child: SizedBox(
-              height: kSwapButtonSize,
-              width: kSwapButtonSize,
+              height: _kSwapButtonSize,
+              width: _kSwapButtonSize,
               child: CalculatorButton(
                 button: ButtonModel(
                     child: FittedBox(
