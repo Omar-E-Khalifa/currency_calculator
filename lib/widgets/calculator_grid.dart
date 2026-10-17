@@ -11,19 +11,29 @@ class CalculatorGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: GridView.builder(
-        physics:
-            const NeverScrollableScrollPhysics(), // The calculator buttons should never scroll
-        shrinkWrap: true,
-        itemCount: buttonsList.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 4,
-          crossAxisSpacing: 27,
-          mainAxisSpacing: 15,
-        ),
-        itemBuilder: (context, index) {
-          return CalculatorButton(
-            button: buttonsList[index],
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          const double crossAxisSpacing = 27;
+          const double mainAxisSpacing = 15;
+          final double cellWidth =
+              (constraints.maxWidth - 3 * crossAxisSpacing) / 4;
+          final double cellHeight =
+              (constraints.maxHeight - 4 * mainAxisSpacing) / 5;
+          return GridView.builder(
+            physics:
+                const NeverScrollableScrollPhysics(), // The calculator buttons should never scroll
+            itemCount: buttonsList.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 4,
+              childAspectRatio: cellWidth / cellHeight,
+              crossAxisSpacing: crossAxisSpacing,
+              mainAxisSpacing: mainAxisSpacing,
+            ),
+            itemBuilder: (context, index) {
+              return CalculatorButton(
+                button: buttonsList[index],
+              );
+            },
           );
         },
       ),
